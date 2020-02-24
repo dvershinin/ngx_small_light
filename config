@@ -2,7 +2,7 @@ ngx_feature="ngx_small_light dependencies"
 ngx_feature_libs="-lMagickWand -lMagickCore     -lMagickWand -lMagickCore   "
 ngx_feature_name=
 ngx_feature_run=no
-ngx_feature_inc_path="$ngx_feature_inc_path  -I/usr/include/ImageMagick    "
+ngx_feature_inc_path="$ngx_feature_inc_path  `pkg-config ImageMagick --cflags-only-I`    "
 ngx_feature_incs="#include <wand/MagickWand.h>
 "
 ngx_feature_path=
