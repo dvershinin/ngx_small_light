@@ -1,8 +1,15 @@
 ngx_feature="ngx_small_light dependencies"
-ngx_feature_libs="-lMagickWand -lMagickCore     -lMagickWand -lMagickCore   "
+RHEL=$(rpm -E %{rhel})
+if (( $RHEL > 7 )); then
+  echo 'RHEL 8 and newer'
+  ngx_feature_libs="-lMagickWand-6.Q16 -lMagickCore-6.Q16    -lMagickWand-6.Q16 -lMagickCore-6.Q16  "
+  ngx_feature_inc_path="$ngx_feature_inc_path -I/usr/include/ImageMagick-6  -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16   "
+else
+  ngx_feature_libs="-lMagickWand -lMagickCore     -lMagickWand -lMagickCore   "
+  ngx_feature_inc_path="$ngx_feature_inc_path  `pkg-config ImageMagick --cflags-only-I`    "
+fi
 ngx_feature_name=
 ngx_feature_run=no
-ngx_feature_inc_path="$ngx_feature_inc_path  `pkg-config ImageMagick --cflags-only-I`    "
 ngx_feature_incs="#include <wand/MagickWand.h>
 "
 ngx_feature_path=
@@ -41,7 +48,12 @@ SMALL_LIGHT_DEPS="                                                    \
                 $ngx_addon_dir/src/ngx_http_small_light_imagemagick.h \
                 "
 
-CFLAGS="${CFLAGS} -fopenmp -I/usr/include/ImageMagick       "
+if (( $RHEL > 7 )); then
+  echo 'RHEL 8 and newer'
+  CFLAGS="${CFLAGS} -I/usr/include/ImageMagick-6 -fopenmp -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16      "
+else
+  CFLAGS="${CFLAGS} -fopenmp -I/usr/include/ImageMagick       "
+fi
 
 ngx_addon_name=ngx_http_small_light_module
 
