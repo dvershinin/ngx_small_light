@@ -5,7 +5,7 @@ if (( $RHEL > 7 )); then
   ngx_feature_libs="-lMagickWand-6.Q16 -lMagickCore-6.Q16    -lMagickWand-6.Q16 -lMagickCore-6.Q16  "
   ngx_feature_inc_path="$ngx_feature_inc_path -I/usr/include/ImageMagick-6  -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16   "
 else
-  ngx_feature_libs="-lMagickWand -lMagickCore     -lMagickWand -lMagickCore   "
+  ngx_feature_libs="`pkg-config --libs-only-l MagickWand`"
   ngx_feature_inc_path="$ngx_feature_inc_path  `pkg-config ImageMagick --cflags-only-I`    "
 fi
 ngx_feature_name=
