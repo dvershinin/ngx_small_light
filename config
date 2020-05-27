@@ -40,13 +40,7 @@ SMALL_LIGHT_DEPS="                                                    \
                 $ngx_addon_dir/src/ngx_http_small_light_type.h        \
                 $ngx_addon_dir/src/ngx_http_small_light_imagemagick.h \
                 "
-
-if (( $RHEL > 7 )); then
-  echo 'RHEL 8 and newer'
-  CFLAGS="${CFLAGS} -I/usr/include/ImageMagick-6 -fopenmp -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16      "
-else
-  CFLAGS="${CFLAGS} -fopenmp -I/usr/include/ImageMagick       "
-fi
+CFLAGS="${CFLAGS} -fopenmp `pkg-config ImageMagick --cflags-only-I` -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 "
 
 ngx_addon_name=ngx_http_small_light_module
 
