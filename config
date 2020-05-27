@@ -1,13 +1,6 @@
 ngx_feature="ngx_small_light dependencies"
-RHEL=$(rpm -E %{rhel})
-if (( $RHEL > 7 )); then
-  echo 'RHEL 8 and newer'
-  ngx_feature_libs="-lMagickWand-6.Q16 -lMagickCore-6.Q16    -lMagickWand-6.Q16 -lMagickCore-6.Q16  "
-  ngx_feature_inc_path="$ngx_feature_inc_path -I/usr/include/ImageMagick-6  -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16   "
-else
-  ngx_feature_libs="`pkg-config --libs-only-l MagickWand`"
-  ngx_feature_inc_path="$ngx_feature_inc_path  `pkg-config ImageMagick --cflags-only-I`    "
-fi
+ngx_feature_libs=" `pkg-config --libs-only-l MagickWand` "
+ngx_feature_inc_path="$ngx_feature_inc_path `pkg-config ImageMagick --cflags-only-I` -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 "
 ngx_feature_name=
 ngx_feature_run=no
 ngx_feature_incs="#include <wand/MagickWand.h>
